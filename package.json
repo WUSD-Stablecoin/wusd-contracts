@@ -1,0 +1,27 @@
+{
+  "name": "wusd",
+  "version": "0.1.0",
+  "dependencies": {
+    "@mblackmblack/to-seconds": "^0.1.0",
+    "axios": "^0.19.0",
+    "bignumber.js": "^9.0.0",
+    "decimal.js": "^10.2.0",
+    "lodash": "^4.17.11",
+    "openzeppelin-solidity": "^2.2.0",
+    "truffle-contract": "^4.0.11",
+    "truffle-hdwallet-provider": "^1.0.9",
+    "web3": "^1.2.0"
+  },
+  "scripts": {
+    "test": "truffle test",
+    "coverage": "npx solidity-coverage"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-bignumber": "^3.0.0",
+    "chai-bn": "^0.1.1",
+    "coveralls": "^3.0.5",
+    "openzeppelin-test-helpers": "^0.4.1",
+    "solidity-coverage": "^0.6.3"
+  }
+}
