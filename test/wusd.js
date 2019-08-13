@@ -37,14 +37,26 @@ contract("WUSD", accounts => {
     it('should update total supply on deposit', async function() {
       const wusdBalBefore = await this.wusd.balanceOf.call(account1)
       const wusdSupplyBefore = await this.wusd.totalSupply.call()
+      const daiBalBefore = await this.dai.balanceOf.call(account1)
+      const usdcBalBefore = await this.usdc.balanceOf.call(account1)
+      const tusdBalBefore = await this.tusd.balanceOf.call(account1)
+      const paxBalBefore = await this.pax.balanceOf.call(account1)
 
       this.wusd.deposit(toWei('4', 'ether'))
 
       const wusdBalAfter = await this.wusd.balanceOf.call(account1)
       const wusdSupplyAfter = await this.wusd.totalSupply.call()
+      const daiBalAfter = await this.dai.balanceOf.call(account1)
+      const usdcBalAfter = await this.usdc.balanceOf.call(account1)
+      const tusdBalAfter = await this.tusd.balanceOf.call(account1)
+      const paxBalAfter = await this.pax.balanceOf.call(account1)
 
       assert.equal(BigNumber(wusdBalBefore).plus(toWei('4', 'ether')).toFixed(), wusdBalAfter.toString())
       assert.equal(BigNumber(wusdSupplyBefore).plus(toWei('4', 'ether')).toFixed(), wusdSupplyAfter.toString())
+      assert.equal(daiBalBefore.toString(), BigNumber(daiBalAfter).plus(toWei('1', 'ether')).toFixed())
+      assert.equal(usdcBalBefore.toString(), BigNumber(usdcBalAfter).plus(toWei('1', 'mwei')).toFixed())
+      assert.equal(tusdBalBefore.toString(), BigNumber(tusdBalAfter).plus(toWei('1', 'ether')).toFixed())
+      assert.equal(paxBalBefore.toString(), BigNumber(paxBalAfter).plus(toWei('1', 'ether')).toFixed())
     })
   })
 })

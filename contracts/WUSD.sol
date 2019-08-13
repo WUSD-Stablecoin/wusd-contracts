@@ -74,11 +74,11 @@ contract WUSD is DSMath {
 
         if (src != msg.sender && allowance[src][msg.sender] != uint(-1)) {
             require(allowance[src][msg.sender] >= wad);
-            allowance[src][msg.sender] -= wad;
+            allowance[src][msg.sender] = sub(allowance[src][msg.sender], wad);
         }
 
-        balanceOf[src] -= wad;
-        balanceOf[dst] += wad;
+        balanceOf[src] = sub(balanceOf[src], wad);
+        balanceOf[dst] = add(balanceOf[dst], wad);
 
         emit Transfer(src, dst, wad);
 
