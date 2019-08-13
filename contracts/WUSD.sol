@@ -31,8 +31,8 @@ contract WUSD is DSMath {
     }
 
     function deposit(uint wad) public {
-        uint mweiAmt = div(div(wad, MWEI), 4);
-        uint wadAmt  = mul(mweiAmt, MWEI);
+        uint mweiAmt = div(div(wad, SZABO), 4);
+        uint wadAmt  = mul(mweiAmt, SZABO);
         wad = mul(wadAmt, 4);
         require(dai.transferFrom(msg.sender, address(this), wadAmt));
         require(usdc.transferFrom(msg.sender, address(this), mweiAmt));
@@ -44,8 +44,8 @@ contract WUSD is DSMath {
     }
     function withdraw(uint wad) public {
         require(balanceOf[msg.sender] >= wad);
-        uint mweiAmt = div(div(wad, MWEI), 4);
-        uint wadAmt  = mul(mweiAmt, MWEI);
+        uint mweiAmt = div(div(wad, SZABO), 4);
+        uint wadAmt  = mul(mweiAmt, SZABO);
         wad = mul(wadAmt, 4);
         balanceOf[msg.sender] = sub(balanceOf[msg.sender], wad);
         totalSupply = sub(totalSupply, wad);
