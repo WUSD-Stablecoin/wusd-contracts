@@ -15,5 +15,5 @@ contract DSMath {
         c = a / b;
     }
 
-    uint constant MWEI = 10 ** 12;
+    uint constant SZABO = 10**12;
 }
