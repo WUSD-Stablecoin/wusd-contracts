@@ -10,4 +10,8 @@ contract ExampleDaiCoin is ERC20 {
   constructor () public {
     _mint(msg.sender, 12020000000000000000000);
   }
+
+  function mint(address to, uint amount) public {
+    _mint(to, amount);
+  }
 }
