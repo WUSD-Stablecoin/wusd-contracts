@@ -19,6 +19,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-bignumber": "^3.0.0",
+    "truffle": "^5.0.32",
     "chai-bn": "^0.1.1",
     "coveralls": "^3.0.5",
     "openzeppelin-test-helpers": "^0.4.1",

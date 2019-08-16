@@ -13,6 +13,13 @@ contract WUSD is DSMath {
     ERC20 public tusd;
     ERC20 public pax;
 
+    address public _dai;
+    address public _usdc;
+    address public _tusd;
+    address public _pax;
+
+
+
     event  Approval(address indexed src, address indexed guy, uint wad);
     event  Transfer(address indexed src, address indexed dst, uint wad);
     event  Deposit(address indexed dst, uint wad);
@@ -23,25 +30,50 @@ contract WUSD is DSMath {
 
     uint public totalSupply;
 
-    constructor(ERC20 dai_, ERC20 usdc_, ERC20 tusd_, ERC20 pax_) public {
-      dai  = dai_;
+    constructor(ERC20 dai_, ERC20 usdc_, ERC20 tusd_, ERC20 pax_, address dai__, address usdc__, address tusd__, address pax__) public {
+      dai = dai_;
       usdc = usdc_;
       tusd = tusd_;
-      pax  = pax_;
+      pax = pax_;
+      _dai = dai__;
+      _usdc = usdc__;
+      _tusd = tusd__;
+      _pax = pax__;
     }
 
-    function deposit(uint wad) public {
-        uint mweiAmt = div(div(wad, SZABO), 4);
+    function deposit(address id, uint wad) public {
+        uint mweiAmt = div(wad, SZABO);
         uint wadAmt  = mul(mweiAmt, SZABO);
-        wad = mul(wadAmt, 4);
-        require(dai.transferFrom(msg.sender, address(this), wadAmt));
-        require(usdc.transferFrom(msg.sender, address(this), mweiAmt));
-        require(tusd.transferFrom(msg.sender, address(this), wadAmt));
-        require(pax.transferFrom(msg.sender, address(this), wadAmt));
+
+        if (id == _dai) {
+            require(getPercentOfTotal(id), "Too much DAI in contract");
+            require(dai.transferFrom(msg.sender, address(this), wadAmt), "balance insufficient");
+
+        }
+
+        else if (id == _usdc) {
+            require(getPercentOfTotal(id), "Too much usdc in contract");
+            require(usdc.transferFrom(msg.sender, address(this), mweiAmt), "balance insufficient");
+
+        }
+        else if (id == _tusd) {
+            require(getPercentOfTotal(id), "Too much tsdc in contract");
+            require(tusd.transferFrom(msg.sender, address(this), wadAmt), "balance insufficient");
+
+        }
+        else if (id == _pax) {
+            require(getPercentOfTotal(id), "Too much pax in contract");
+            require(pax.transferFrom(msg.sender, address(this), wadAmt), "balance insufficient");
+
+        }
+        else {
+           revert("Token not supported");
+        }
         balanceOf[msg.sender] = add(balanceOf[msg.sender], wad);
         totalSupply = add(totalSupply, wad);
         emit Deposit(msg.sender, wad);
     }
+
     function withdraw(uint wad) public {
         require(balanceOf[msg.sender] >= wad);
         uint mweiAmt = div(div(wad, SZABO), 4);
@@ -56,6 +88,21 @@ contract WUSD is DSMath {
         emit Withdrawal(msg.sender, wad);
     }
 
+    function getPercentOfTotal(address id) public view returns (bool) {
+        if (id == _dai && dai.balanceOf(address(this)) / 4 < 30) {
+            return true;
+        } else if (id == _usdc && usdc.balanceOf(address(this)) / 4 < 30) {
+            return true;
+        } else if (id == _tusd && tusd.balanceOf(address(this)) / 4 < 30) {
+            return true;
+        }
+        else if (id == _pax && pax.balanceOf(address(this)) / 4 < 30) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
     function approve(address guy, uint wad) public returns (bool) {
         allowance[msg.sender][guy] = wad;
         emit Approval(msg.sender, guy, wad);
