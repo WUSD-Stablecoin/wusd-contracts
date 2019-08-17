@@ -14,6 +14,6 @@ module.exports = function(deployer) {
     var tusd = await ExampleTusdCoin.deployed();
     await deployer.deploy(ExamplePaxCoin);
     var pax = await ExamplePaxCoin.deployed();
-    await deployer.deploy(WUSD, dai.address, usdc.address, tusd.address, pax.address)
+    await deployer.deploy(WUSD, dai.address, usdc.address, tusd.address, pax.address,  dai.address, usdc.address, tusd.address, pax.address)
   })
 };
