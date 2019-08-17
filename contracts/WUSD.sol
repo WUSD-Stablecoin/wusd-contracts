@@ -121,14 +121,14 @@ contract WUSD is DSMath {
     }
 
     function checkDepositPercentOfTotal(address id) public view returns (bool) {
-        if (id == _dai && dai.balanceOf(address(this)) / 4 < 30) {
+        if (id == _dai && dai.balanceOf(address(this)) / getTotal() * 100 < 30) {
             return true;
-        } else if (id == _usdc && usdc.balanceOf(address(this)) / 4 < 30) {
+        } else if (id == _usdc && usdc.balanceOf(address(this)) / getTotal() * 100 < 30) {
             return true;
-        } else if (id == _tusd && tusd.balanceOf(address(this)) / 4 < 30) {
+        } else if (id == _tusd && tusd.balanceOf(address(this)) / getTotal() * 100 < 30) {
             return true;
         }
-        else if (id == _pax && pax.balanceOf(address(this)) / 4 < 30) {
+        else if (id == _pax && pax.balanceOf(address(this)) / getTotal() * 100 < 30) {
             return true;
         }
         else {
@@ -137,19 +137,25 @@ contract WUSD is DSMath {
     }
 
     function checkWithdrawlPercentOfTotal(address id) public view returns (bool) {
-        if (id == _dai && dai.balanceOf(address(this)) / 4 > 20) {
+        if (id == _dai && dai.balanceOf(address(this)) / getTotal() * 100 > 20) {
             return true;
-        } else if (id == _usdc && usdc.balanceOf(address(this)) / 4 > 20) {
+        } else if (id == _usdc && usdc.balanceOf(address(this)) / getTotal() * 100 > 20) {
             return true;
-        } else if (id == _tusd && tusd.balanceOf(address(this)) / 4 > 20) {
+        } else if (id == _tusd && tusd.balanceOf(address(this)) / getTotal() * 100 > 20) {
             return true;
         }
-        else if (id == _pax && pax.balanceOf(address(this)) / 4 > 20) {
+        else if (id == _pax && pax.balanceOf(address(this)) / getTotal() * 100 > 20) {
             return true;
         }
         else {
             return false;
         }
+    }
+
+    function getTotal() public view returns (uint) {
+        uint total;
+        total = dai.balanceOf(address(this)) + usdc.balanceOf(address(this)) + tusd.balanceOf(address(this)) + pax.balanceOf(address(this));
+        return total;
     }
     function approve(address guy, uint wad) public returns (bool) {
         allowance[msg.sender][guy] = wad;

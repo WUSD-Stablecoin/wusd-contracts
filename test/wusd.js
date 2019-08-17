@@ -31,6 +31,12 @@ contract("WUSD", accounts => {
     this.usdc.approve(this.wusd.address, toWei('100', 'ether'))
     this.tusd.approve(this.wusd.address, toWei('100', 'ether'))
     this.pax.approve(this.wusd.address, toWei('100', 'ether'))
+
+    this.dai.mint(this.wusd.address, toWei('100', 'ether'))
+    this.usdc.mint(this.wusd.address, toWei('100', 'ether'))
+    this.tusd.mint(this.wusd.address, toWei('100', 'ether'))
+    this.pax.mint(this.wusd.address, toWei('100', 'ether'))
+
   })
 
   describe('deposit', function() {
@@ -42,7 +48,11 @@ contract("WUSD", accounts => {
       const tusdBalBefore = await this.tusd.balanceOf.call(account1)
       const paxBalBefore = await this.pax.balanceOf.call(account1)
 
-      this.wusd.deposit(toWei('4', 'ether'))
+      this.wusd.deposit(this.dai.address,toWei('4', 'ether'))
+      this.wusd.deposit(this.usdc.address,toWei('4', 'ether'))
+      this.wusd.deposit(this.tusd.address,toWei('4', 'ether'))
+      this.wusd.deposit(this.pax.address,toWei('4', 'ether'))
+
 
       const wusdBalAfter = await this.wusd.balanceOf.call(account1)
       const wusdSupplyAfter = await this.wusd.totalSupply.call()
@@ -51,12 +61,12 @@ contract("WUSD", accounts => {
       const tusdBalAfter = await this.tusd.balanceOf.call(account1)
       const paxBalAfter = await this.pax.balanceOf.call(account1)
 
-      assert.equal(BigNumber(wusdBalBefore).plus(toWei('4', 'ether')).toFixed(), wusdBalAfter.toString())
-      assert.equal(BigNumber(wusdSupplyBefore).plus(toWei('4', 'ether')).toFixed(), wusdSupplyAfter.toString())
-      assert.equal(daiBalBefore.toString(), BigNumber(daiBalAfter).plus(toWei('1', 'ether')).toFixed())
-      assert.equal(usdcBalBefore.toString(), BigNumber(usdcBalAfter).plus(toWei('1', 'mwei')).toFixed())
-      assert.equal(tusdBalBefore.toString(), BigNumber(tusdBalAfter).plus(toWei('1', 'ether')).toFixed())
-      assert.equal(paxBalBefore.toString(), BigNumber(paxBalAfter).plus(toWei('1', 'ether')).toFixed())
+      assert.equal(BigNumber(wusdBalBefore).plus(toWei('16', 'ether')).toFixed(), wusdBalAfter.toString())
+      assert.equal(BigNumber(wusdSupplyBefore).plus(toWei('16', 'ether')).toFixed(), wusdSupplyAfter.toString())
+      assert.equal(daiBalBefore.toString(), BigNumber(daiBalAfter).plus(toWei('4', 'ether')).toFixed())
+      assert.equal(usdcBalBefore.toString(), BigNumber(usdcBalAfter).plus(toWei('4', 'mwei')).toFixed())
+      assert.equal(tusdBalBefore.toString(), BigNumber(tusdBalAfter).plus(toWei('4', 'ether')).toFixed())
+      assert.equal(paxBalBefore.toString(), BigNumber(paxBalAfter).plus(toWei('4', 'ether')).toFixed())
     })
   })
 })
